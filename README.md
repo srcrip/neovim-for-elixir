@@ -1,6 +1,12 @@
-# kickstart.nvim
 
-https://github.com/kdheepak/kickstart.nvim/assets/1813121/f3ff9a2b-c31f-44df-a4fa-8a0d7b17cf7b
+# Neovim for Elixir
+
+[![Neovim for Elixir YouTube Video](https://img.youtube.com/vi/o7PnaiwPHiY/0.jpg)](https://www.youtube.com/watch?v=o7PnaiwPHiY)
+
+This is the GitHub repo of my example for kickstart.nvim + just a few plugins I use for Elixir. I think this is a very
+workable dev environment, and it's really mainly just kickstart out of the box.
+
+# kickstart.nvim
 
 ### Introduction
 

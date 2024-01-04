@@ -88,7 +88,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -113,7 +113,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -209,6 +209,10 @@ require('lazy').setup({
         component_separators = '|',
         section_separators = '',
       },
+      tabline = {
+        lualine_a = { 'buffers' },
+        lualine_z = { 'tabs' }
+      }
     },
   },
 
@@ -266,7 +270,7 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -325,6 +329,32 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+
+-- My keymap suggestions
+vim.keymap.set('n', '<c-l>', '<cmd>bn<cr>', { silent = true, desc = 'Next buffer' })
+vim.keymap.set('n', '<c-h>', '<cmd>bp<cr>', { silent = true, desc = 'Previous buffer' })
+
+-- gF is a more useful default than gf
+vim.keymap.set('n', 'gf', 'gF', { silent = true, desc = 'Go to file' })
+
+-- I like to turn search highlight on, and remove highlight whenever I press escape
+vim.o.hlsearch = true
+vim.keymap.set('n', '<esc>', '<cmd>noh<cr><esc>', { silent = true })
+
+-- I use J and K to go up and down quickly, while keeping jump list clean
+vim.keymap.set('n', '}', '<cmd><c-u>execute "keepjumps norm! " . v:count1 . "}"<cr>', { silent = true })
+vim.keymap.set('n', '{', '<cmd><c-u>execute "keepjumps norm! " . v:count1 . "{"<cr>', { silent = true })
+vim.keymap.set('n', 'J', '}', { silent = true })
+vim.keymap.set('n', 'K', '{', { silent = true })
+
+-- Remap for joining lines, since J is now a motion. But you can also leave this off and do :j as a command
+vim.keymap.set('n', 'gJ', '<cmd>join<cr>', { silent = true })
+
+-- I have weird Emacs muscle memory, so you probably should use a different keybind for deleting buffers
+vim.keymap.set('n', '<c-x><c-k>', '<cmd>bd<cr>', { silent = true })
+
+-- I prefer cursor in the center
+vim.o.scrolloff = 999
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -423,10 +453,10 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'elixir', 'eex' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
+    auto_install = true,
 
     highlight = { enable = true },
     indent = { enable = true },
@@ -514,7 +544,7 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   -- See `:help K` for why this keymap
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  nmap('<leader>k', vim.lsp.buf.hover, 'Hover Documentation')
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
@@ -569,7 +599,7 @@ local servers = {
   -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
+  elixirls = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
